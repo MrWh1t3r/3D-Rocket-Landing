@@ -1,29 +1,36 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] private float levelLoadDelay = 1.5f;
-    [SerializeField] private AudioClip crash;
-    [SerializeField] private AudioClip success;
+    [SerializeField] private AudioClip crashAudio;
+    [SerializeField] private AudioClip successAudio;
     [SerializeField] private ParticleSystem crashParticles;
     [SerializeField] private ParticleSystem successParticles;
     
     private AudioSource _audioSource;
 
     private bool _isTransitioning = false;
+    private bool _isCollisionEnabled = true;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        DebugKeys();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(_isTransitioning)
+        if(_isTransitioning || !_isCollisionEnabled)
             return;
         
         switch (collision.gameObject.tag)
@@ -48,7 +55,7 @@ public class CollisionHandler : MonoBehaviour
     {
         _isTransitioning = true;
         _audioSource.Stop();
-        _audioSource.PlayOneShot(crash);
+        _audioSource.PlayOneShot(crashAudio);
         crashParticles.Play();
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", levelLoadDelay);
@@ -59,7 +66,7 @@ public class CollisionHandler : MonoBehaviour
         _isTransitioning = true;
         Debug.Log("Finished");
         _audioSource.Stop();
-        _audioSource.PlayOneShot(success);
+        _audioSource.PlayOneShot(successAudio);
         successParticles.Play();
         GetComponent<Movement>().enabled = false;
         Invoke("NextLevel", levelLoadDelay);
@@ -75,6 +82,22 @@ public class CollisionHandler : MonoBehaviour
     {
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(nextSceneIndex);
+    }
+    
+    //debug buttons
+    void DebugKeys()
+    {
+        if (Input.GetKey(KeyCode.L))
+        {
+            NextLevel();
+            Debug.Log("Level skipped");
+        }
+        
+        if (Input.GetKey(KeyCode.C))
+        {
+            _isCollisionEnabled = !_isCollisionEnabled;
+            Debug.Log("CollisionEnabled =  " + _isCollisionEnabled);
+        }
     }
 }
  

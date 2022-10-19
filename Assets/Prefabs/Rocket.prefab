@@ -71,7 +71,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrustPower: 1000
   rotationSpeed: 100
-  mainEngine: {fileID: 8300000, guid: cbf0dd10940977e47b5b9caac5ae2522, type: 3}
+  mainEngineAudio: {fileID: 8300000, guid: cbf0dd10940977e47b5b9caac5ae2522, type: 3}
+  sideEngineAudio: {fileID: 8300000, guid: cbf0dd10940977e47b5b9caac5ae2522, type: 3}
   mainBoosterParticles: {fileID: 4229298385776102088}
   leftBoosterParticles: {fileID: 272568924750615}
   rightBoosterParticles: {fileID: 8770989588402723206}
@@ -88,8 +89,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLoadDelay: 1
-  crash: {fileID: 8300000, guid: 7b16e34b028ab9041a3bfb0446c99b6d, type: 3}
-  success: {fileID: 8300000, guid: 84515b42b18324744a8598546712aa8f, type: 3}
+  crashAudio: {fileID: 8300000, guid: 7b16e34b028ab9041a3bfb0446c99b6d, type: 3}
+  successAudio: {fileID: 8300000, guid: 84515b42b18324744a8598546712aa8f, type: 3}
   crashParticles: {fileID: 2732723689696696008}
   successParticles: {fileID: 8318066212090624246}
 --- !u!82 &476369374
