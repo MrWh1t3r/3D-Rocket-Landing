@@ -92,11 +92,15 @@ public class CollisionHandler : MonoBehaviour
             NextLevel();
             Debug.Log("Level skipped");
         }
-        
-        if (Input.GetKey(KeyCode.C))
+        else if (Input.GetKey(KeyCode.C))
         {
             _isCollisionEnabled = !_isCollisionEnabled;
             Debug.Log("CollisionEnabled =  " + _isCollisionEnabled);
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
         }
     }
 }
