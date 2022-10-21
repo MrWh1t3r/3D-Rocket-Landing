@@ -12,6 +12,7 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] private AudioClip successAudio;
     [SerializeField] private ParticleSystem crashParticles;
     [SerializeField] private ParticleSystem successParticles;
+    [SerializeField] private bool isLastLevel = false;
     
     private AudioSource _audioSource;
 
@@ -60,6 +61,12 @@ public class CollisionHandler : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", levelLoadDelay);
     }
+    
+    void ReloadLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
 
     void StartFinishSequence()
     {
@@ -71,32 +78,47 @@ public class CollisionHandler : MonoBehaviour
         GetComponent<Movement>().enabled = false;
         Invoke("NextLevel", levelLoadDelay);
     }
-
-    void ReloadLevel()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
-    }
-
+    
     void NextLevel()
     {
+        if (isLastLevel)
+        {
+            Win();
+            return;
+        }
+
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(nextSceneIndex);
+    }
+
+    void Win()
+    {
+        Debug.Log("Congrats! You completed the game");
     }
     
     //debug buttons
     void DebugKeys()
     {
+        //Press L to skip current level
         if (Input.GetKey(KeyCode.L))
         {
+            if (isLastLevel)
+            {
+                Debug.Log("It's last level");
+                return;
+            }
             NextLevel();
             Debug.Log("Level skipped");
         }
+        
+        //Press C to disable collision
         else if (Input.GetKey(KeyCode.C))
         {
             _isCollisionEnabled = !_isCollisionEnabled;
             Debug.Log("CollisionEnabled =  " + _isCollisionEnabled);
         }
+        
+        //Press R to reload current level
         else if (Input.GetKey(KeyCode.R))
         {
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
